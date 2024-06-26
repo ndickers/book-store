@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { ChangeEvent, useState, useEffect } from "react";
 import Form from "./components/Form";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import Book from "./components/Book";
@@ -20,12 +20,16 @@ function App() {
 
   useEffect(() => {
     if (isEdit.edit) {
-      const dataToEdit = books.find((book: TBook) => book.id === isEdit.id);
-      setFormData(dataToEdit);
+      const dataToEdit: TBook | undefined = books.find(
+        (book) => book.id === isEdit.id
+      );
+      if (dataToEdit !== undefined) {
+        setFormData(dataToEdit);
+      }
     }
   }, [isEdit]);
-  function handleFormChange({ target }: FormEvent<HTMLFormElement>) {
-    setFormData((prevData) => ({ ...prevData, [target.name]: target.value }));
+  function handleFormChange({ target }: ChangeEvent<HTMLInputElement>) {
+    setFormData((prevData) => ({ ...prevData, [target?.name]: target?.value }));
   }
   function searching(bookTitle: string, bookList: TBook[]) {
     if (bookTitle) {

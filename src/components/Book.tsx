@@ -1,13 +1,12 @@
+import { TAction, TEdit } from "../types.ts";
+
 interface TBook {
   id: number;
   title: string;
   author: string;
   year: number;
-  deleteDispatch: (action: {
-    type: string;
-    payload: { bookId: number };
-  }) => void;
-  setIsEdit: (editState: { id: number; edit: boolean }) => void;
+  deleteDispatch: (action: TAction) => void;
+  setIsEdit: (editState: TEdit) => void;
 }
 
 export default function Book({
