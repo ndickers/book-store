@@ -3,7 +3,6 @@ export interface TBook {
   titleVal: string;
   authorVal: string;
   yearVal: number;
-  id: number;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   isEdit: { edit: boolean };
 }

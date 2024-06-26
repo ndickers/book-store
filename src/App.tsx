@@ -64,7 +64,7 @@ function App() {
           onChange={handleFormChange}
           onSubmit={(e) => {
             e.preventDefault();
-            if (isEdit.edit) {
+            if (isEdit.edit && isEdit.id !== null) {
               dispatch({
                 type: "edit book",
                 payload: { id: isEdit.id, data: formData },
