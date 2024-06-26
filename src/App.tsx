@@ -1,38 +1,48 @@
-import { useState, useReducer } from "react";
+import { useState, useEffect } from "react";
 import Form from "./components/Form";
+import { useLocalStorage } from "./hooks/useLocalStorage";
 import Book from "./components/Book";
-function reducer(state, action) {
-  switch (action.type) {
-    case "add-note":
-      return [...state, action.payload];
-    case "delete":
-      return state.filter((book) => book.id !== action.payload.bookId);
-    default:
-      break;
-  }
-}
+import { TBook, TEdit } from "./types.ts";
 
 function App() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<TBook>({
     title: "",
     author: "",
     year: 0,
     id: 1,
   });
-  const [books, dispatch] = useReducer(reducer, [
-    { id: 1, title: "way of superior man", author: "Robert green", year: 2022 },
-  ]);
+  const [isEdit, setIsEdit] = useState<TEdit>({
+    id: null,
+    edit: false,
+  });
+  const [books, dispatch] = useLocalStorage();
+  const [searchTitle, setSearchTitle] = useState("");
 
-  function handleFormChange({ target }) {
+  useEffect(() => {
+    if (isEdit.edit) {
+      const dataToEdit = books.find((book: TBook) => book.id === isEdit.id);
+      setFormData(dataToEdit);
+    }
+  }, [isEdit]);
+  function handleFormChange({ target }: FormEvent<HTMLFormElement>) {
     setFormData((prevData) => ({ ...prevData, [target.name]: target.value }));
   }
+  function searching(bookTitle: string, bookList: TBook[]) {
+    if (bookTitle) {
+      return bookList.filter(({ title }: TBook) =>
+        title.toLowerCase().includes(bookTitle.toLowerCase())
+      );
+    }
+    return bookList;
+  }
 
-  const booksElems = books.map((book) => (
+  const filterBooks = searching(searchTitle, books);
+  const booksElems = filterBooks.map((book) => (
     <Book
-      onDelete={(id) => {
-        dispatch({ type: "delete", payload: { bookId: id } });
-      }}
-      id={book.id}
+      key={book.id}
+      deleteDispatch={dispatch}
+      id={book.id as number}
+      setIsEdit={setIsEdit}
       title={book.title}
       author={book.author}
       year={book.year}
@@ -45,15 +55,35 @@ function App() {
         <Form
           titleVal={formData.title}
           authorVal={formData.author}
+          isEdit={isEdit}
           yearVal={formData.year}
           onChange={handleFormChange}
           onSubmit={(e) => {
             e.preventDefault();
-            dispatch({
-              type: "add-note",
-              payload: { ...formData, id: books.length + 1 },
-            });
+            if (isEdit.edit) {
+              dispatch({
+                type: "edit book",
+                payload: { id: isEdit.id, data: formData },
+              });
+              setIsEdit((prevEdit) => ({ ...prevEdit, edit: false }));
+            } else {
+              dispatch({
+                type: "add-note",
+                payload: { ...formData, id: books.length + 1 },
+              });
+              setFormData({ title: "", author: "", year: 0 });
+            }
           }}
+        />
+        <input
+          className="my-3 p-2 w-full"
+          onChange={(e) => {
+            setSearchTitle(e.target.value);
+          }}
+          value={searchTitle}
+          type="text"
+          name="search"
+          placeholder="Search book title"
         />
         <div>{booksElems}</div>
       </div>
