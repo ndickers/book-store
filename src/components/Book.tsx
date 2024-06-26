@@ -18,30 +18,26 @@ export default function Book({
   setIsEdit,
 }: TBook) {
   return (
-    <article key={id}>
-      <div className="flex justify-between items-center">
-        <h2 className="font-semibold text-2xl">{title}</h2>
-        <div>
-          <button
-            className="btn-atyle"
-            onClick={() => {
-              deleteDispatch({ type: "delete", payload: { bookId: id } });
-            }}
-          >
-            delete
-          </button>
-          <button
-            className="btn-atyle ml-1"
-            onClick={() => setIsEdit({ id: id, edit: true })}
-          >
-            edit
-          </button>
-        </div>
-      </div>
-      <div className="flex justify-between">
-        <p className="text-lg">{author}</p>
-        <p>{year}</p>
-      </div>
-    </article>
+    <tr className="border-2 border-gray-500">
+      <td className="td-style">{title}</td>
+      <td className="td-style">{author}</td>
+      <td className="td-style">{year}</td>
+      <td className="td-style">
+        <button
+          className="btn-atyle"
+          onClick={() => {
+            deleteDispatch({ type: "delete", payload: { bookId: id } });
+          }}
+        >
+          delete
+        </button>
+        <button
+          className="btn-atyle ml-1"
+          onClick={() => setIsEdit({ id: id, edit: true })}
+        >
+          edit
+        </button>
+      </td>
+    </tr>
   );
 }

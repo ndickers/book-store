@@ -54,7 +54,7 @@ function App() {
   ));
 
   return (
-    <div className="pt-8 max-w-[20rem] mx-auto">
+    <div className="pt-8 max-w-[40rem] mx-auto">
       <div>
         <Form
           titleVal={formData.title}
@@ -80,7 +80,7 @@ function App() {
           }}
         />
         <input
-          className="my-3 p-2 w-full"
+          className="my-3 p-2 w-full border-gray-300 border-2 rounded-md"
           onChange={(e) => {
             setSearchTitle(e.target.value);
           }}
@@ -89,7 +89,18 @@ function App() {
           name="search"
           placeholder="Search book title"
         />
-        <div>{booksElems}</div>
+
+        <div>
+          <table className="w-full text-center">
+            <tr className="border-4 border-gray-600  ">
+              <th className="th-style">Title</th>
+              <th className="th-style">Author</th>
+              <th className="th-style">Year</th>
+              <th className="th-style">Actions</th>
+            </tr>
+            {booksElems}
+          </table>
+        </div>
       </div>
     </div>
   );

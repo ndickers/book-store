@@ -15,9 +15,9 @@ export default function Form({
   isEdit,
 }: TBook) {
   return (
-    <form onSubmit={onSubmit} className=" mx-auto " action="">
+    <form onSubmit={onSubmit} className=" mx-auto rounded-lg " action="">
       <input
-        className="input-style"
+        className="input-style rounded-lg my-2"
         type="text"
         name="title"
         value={titleVal}
@@ -26,7 +26,7 @@ export default function Form({
       />
       <br />
       <input
-        className="input-style"
+        className="input-style rounded-lg my-2"
         type="text"
         name="author"
         value={authorVal}
@@ -35,7 +35,7 @@ export default function Form({
       />
       <br />
       <input
-        className="input-style"
+        className="input-style rounded-lg my-2"
         type="number"
         name="year"
         value={yearVal}
